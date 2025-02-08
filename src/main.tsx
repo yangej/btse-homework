@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
 
@@ -8,11 +7,9 @@ import WebSocketContextProvider from './modules/common/web-sockets/components/We
 import { theme } from './theme/index.ts';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
-      <WebSocketContextProvider>
-        <App />
-      </WebSocketContextProvider>
-    </ThemeProvider>
-  </StrictMode>,
+  <ThemeProvider theme={theme}>
+    <WebSocketContextProvider>
+      <App />
+    </WebSocketContextProvider>
+  </ThemeProvider>,
 );
