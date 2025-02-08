@@ -1,4 +1,9 @@
-import { OrderBookTableData, OrderBookTableDataItem, OrderPair } from './types';
+import {
+  Order,
+  OrderBookTableData,
+  OrderBookTableDataItem,
+  OrderPair,
+} from './types';
 
 export const getBids = (pairs: OrderPair[]): OrderBookTableData['bids'] => {
   const result: OrderBookTableDataItem[] = [];
@@ -38,6 +43,10 @@ export const getAsks = (pairs: OrderPair[]): OrderBookTableData['asks'] => {
   }
 
   return { data: result, totalSize: lastSize };
+};
+
+export const toOrder = ([price, size]: OrderPair): Order => {
+  return { price: Number(price), size: Number(size) };
 };
 
 export const toOrderBookTableData = (data: {
