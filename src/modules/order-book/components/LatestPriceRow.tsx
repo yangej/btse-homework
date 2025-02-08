@@ -2,6 +2,7 @@ import styled, { CSSProperties, useTheme } from 'styled-components';
 
 import ArrowIcon from '@/modules/common/components/ArrowIcon';
 import { TableBodyCell } from '@/modules/common/components/Table';
+import { numberFormatter } from '@/modules/common/formatters';
 import { PriceRecord } from '@/modules/trade/types';
 
 const LatestPriceRow = ({ record }: { record: PriceRecord }) => {
@@ -21,7 +22,7 @@ const LatestPriceRow = ({ record }: { record: PriceRecord }) => {
     <Row $backgroundColor={theme.colors[getThemeKey()].background.light}>
       <Cell $color={theme.colors[getThemeKey()].text}>
         <PriceWrapper>
-          <Text>{record.current}</Text>
+          <Text>{numberFormatter.format(record.current)}</Text>
           {record.current === record.previous ? null : (
             <IconWrapper
               $direction={record.current > record.previous ? 'up' : 'down'}

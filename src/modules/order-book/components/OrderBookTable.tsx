@@ -9,6 +9,7 @@ import {
   TableHeadCell,
   TableRow,
 } from '@/modules/common/components/Table';
+import { numberFormatter } from '@/modules/common/formatters';
 import { TotalCell } from '@/modules/order-book/components/TotalCell';
 import { PriceRecord } from '@/modules/trade/types';
 
@@ -65,11 +66,11 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
               }
             >
               <TableBodyCell $width="30%" $color={theme.colors.ask.text}>
-                {data.price}
+                {numberFormatter.format(data.price)}
               </TableBodyCell>
               <TableBodyCell $width="30%" $align="right">
                 <SizeCell $background={getSizeCellBackground(data)}>
-                  {data.size}
+                  {numberFormatter.format(data.size)}
                 </SizeCell>
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
@@ -77,7 +78,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                   $percentage={data.total / asks.totalSize}
                   $background={theme.colors.ask.background.light}
                 >
-                  {data.total}
+                  {numberFormatter.format(data.total)}
                 </TotalCell>
               </TableBodyCell>
             </TableRow>
@@ -93,11 +94,11 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
               }
             >
               <TableBodyCell $width="30%" $color={theme.colors.bid.text}>
-                {data.price}
+                {numberFormatter.format(data.price)}
               </TableBodyCell>
               <TableBodyCell $width="30%" $align="right">
                 <SizeCell $background={getSizeCellBackground(data)}>
-                  {data.size}
+                  {numberFormatter.format(data.size)}
                 </SizeCell>
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
@@ -105,7 +106,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                   $percentage={data.total / bids.totalSize}
                   $background={theme.colors.bid.background.light}
                 >
-                  {data.total}
+                  {numberFormatter.format(data.total)}
                 </TotalCell>
               </TableBodyCell>
             </TableRow>
