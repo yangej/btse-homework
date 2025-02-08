@@ -93,3 +93,14 @@ export type OSSWebSocketType = WebSocketHookValue<OSSWebSocketSupportedTopics>;
 export const useOSSWebSocket = (): OSSWebSocketType => {
   return useWebSocket(`${WEB_SOCKET_URL}/oss/futures`);
 };
+
+type BaseWebSocketSupportedTopics =
+  | 'tradeHistoryApi:BTCPFC'
+  | 'tradeHistoryApi';
+
+export type BaseWebSocketType =
+  WebSocketHookValue<BaseWebSocketSupportedTopics>;
+
+export const useBaseWebSocket = (): BaseWebSocketType => {
+  return useWebSocket(`${WEB_SOCKET_URL}/futures`);
+};
