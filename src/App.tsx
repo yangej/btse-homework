@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import OrderBookTable from './modules/order-book/components/OrderBookTable';
 import { useOrderBook } from './modules/order-book/hooks/useOrderBook';
 import { getAsks, getBids } from './modules/order-book/utils';
+import { useLatestTradePriceRecord } from './modules/trade/hooks/useLatestTradePriceRecord';
 
 const MAX_DISPLAYED_ORDERS = 8;
 
@@ -19,12 +20,19 @@ function App() {
       .slice(0, MAX_DISPLAYED_ORDERS),
   );
 
+  const { data: latestPriceRecord, loading: latestPriceLoading } =
+    useLatestTradePriceRecord();
+
   return (
     <Wrapper>
-      {loading ? (
+      {loading || latestPriceLoading ? (
         'Loading...'
       ) : (
-        <OrderBookTable asks={displayedAsksData} bids={displayedBidsData} />
+        <OrderBookTable
+          asks={displayedAsksData}
+          bids={displayedBidsData}
+          priceRecord={latestPriceRecord}
+        />
       )}
     </Wrapper>
   );

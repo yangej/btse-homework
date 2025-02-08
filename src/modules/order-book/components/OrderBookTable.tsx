@@ -10,15 +10,19 @@ import {
   TableRow,
 } from '@/modules/common/components/Table';
 import { TotalCell } from '@/modules/order-book/components/TotalCell';
+import { PriceRecord } from '@/modules/trade/types';
 
 import { OrderBookTableData, OrderBookTableDataItem } from '../types';
+import LatestPriceRow from './LatestPriceRow';
 import { SizeCell } from './SizeCell';
 
 type OrderBookTableProps = {
   asks: OrderBookTableData;
   bids: OrderBookTableData;
+  priceRecord: PriceRecord;
 };
-function OrderBookTable({ asks, bids }: OrderBookTableProps) {
+
+function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
   const theme = useTheme();
 
   const getSizeCellBackground = (order: OrderBookTableDataItem): string => {
@@ -73,6 +77,7 @@ function OrderBookTable({ asks, bids }: OrderBookTableProps) {
               </TableBodyCell>
             </TableRow>
           ))}
+          <LatestPriceRow record={priceRecord} />
           {bids.data.map((data, index) => (
             /** @todo: correct highlight background, only highlight when data is new */
             <TableRow
