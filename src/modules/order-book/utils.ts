@@ -1,7 +1,7 @@
-import { Order, OrderBook, OrderBookResponse, OrderPair } from './types';
+import { OrderBookTableData, OrderBookTableDataItem, OrderPair } from './types';
 
-export const getBids = (pairs: OrderPair[]): OrderBook['bids'] => {
-  const result: Order[] = [];
+export const getBids = (pairs: OrderPair[]): OrderBookTableData['bids'] => {
+  const result: OrderBookTableDataItem[] = [];
 
   let lastSize = 0;
 
@@ -20,8 +20,8 @@ export const getBids = (pairs: OrderPair[]): OrderBook['bids'] => {
   return { data: result, totalSize: lastSize };
 };
 
-export const getAsks = (pairs: OrderPair[]): OrderBook['asks'] => {
-  const result: Order[] = [];
+export const getAsks = (pairs: OrderPair[]): OrderBookTableData['asks'] => {
+  const result: OrderBookTableDataItem[] = [];
 
   let lastSize = 0;
 
@@ -40,9 +40,12 @@ export const getAsks = (pairs: OrderPair[]): OrderBook['asks'] => {
   return { data: result, totalSize: lastSize };
 };
 
-export const toOrderBook = (response: OrderBookResponse): OrderBook => {
-  const bids = getBids(response.data.bids);
-  const asks = getAsks(response.data.asks);
+export const toOrderBookTableData = (data: {
+  asks: OrderPair[];
+  bids: OrderPair[];
+}): OrderBookTableData => {
+  const bids = getBids(data.bids);
+  const asks = getAsks(data.asks);
 
   return {
     bids,

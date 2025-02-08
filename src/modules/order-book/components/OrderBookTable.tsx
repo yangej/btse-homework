@@ -11,11 +11,11 @@ import {
 } from '@/modules/common/components/Table';
 import { TotalCell } from '@/modules/order-book/components/TotalCell';
 
-import { OrderBook } from '../types';
+import { OrderBookTableData } from '../types';
 
 type OrderBookTableProps = {
-  asks: OrderBook['asks'];
-  bids: OrderBook['bids'];
+  asks: OrderBookTableData['asks'];
+  bids: OrderBookTableData['bids'];
 };
 function OrderBookTable({ asks, bids }: OrderBookTableProps) {
   const theme = useTheme();

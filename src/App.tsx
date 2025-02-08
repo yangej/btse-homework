@@ -2,10 +2,13 @@ import styled from 'styled-components';
 
 import { mockOderBookResponse } from './mocks/mock-order-book-data';
 import OrderBookTable from './modules/order-book/components/OrderBookTable';
-import { toOrderBook } from './modules/order-book/utils';
+import { toOrderBookTableData } from './modules/order-book/utils';
 
 function App() {
-  const mockTableData = toOrderBook(mockOderBookResponse);
+  const mockTableData = toOrderBookTableData({
+    asks: mockOderBookResponse.data.asks,
+    bids: mockOderBookResponse.data.bids,
+  });
 
   return (
     <Wrapper>

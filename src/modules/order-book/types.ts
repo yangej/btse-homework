@@ -19,16 +19,19 @@ export type OrderBookResponse = {
 export type Order = {
   price: number;
   size: number;
+};
+
+export type OrderBookTableDataItem = Order & {
   total: number;
 };
 
-export type OrderBook = {
+export type OrderBookTableData = {
   bids: {
-    data: Order[];
+    data: OrderBookTableDataItem[];
     totalSize: number;
   };
   asks: {
-    data: Order[];
+    data: OrderBookTableDataItem[];
     totalSize: number;
   };
 };
