@@ -14,7 +14,7 @@ import { TotalCell } from '@/modules/order-book/components/TotalCell';
 import { PriceRecord } from '@/modules/trade/types';
 
 import { useNewOrderSet } from '../hooks/useNewOrderSet';
-import { OrderBookTableData, OrderBookTableDataItem } from '../types';
+import { OrderBookTableData } from '../types';
 import LatestPriceRow from './LatestPriceRow';
 import { SizeCell } from './SizeCell';
 
@@ -29,16 +29,6 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
 
   const newAskPrices = useNewOrderSet(asks.data);
   const newBidPrices = useNewOrderSet(bids.data);
-
-  const getSizeCellBackground = (order: OrderBookTableDataItem): string => {
-    if (!order.prevSize || order.prevSize === order.size) return 'transparent';
-
-    if (order.size > order.prevSize) {
-      return theme.colors.bid.background.dark;
-    }
-
-    return theme.colors.ask.background.dark;
-  };
 
   return (
     <>
@@ -69,9 +59,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                 {numberFormatter.format(data.price)}
               </TableBodyCell>
               <TableBodyCell $width="30%" $align="right">
-                <SizeCell $background={getSizeCellBackground(data)}>
-                  {numberFormatter.format(data.size)}
-                </SizeCell>
+                <SizeCell order={data} />
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
                 <TotalCell
@@ -97,9 +85,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                 {numberFormatter.format(data.price)}
               </TableBodyCell>
               <TableBodyCell $width="30%" $align="right">
-                <SizeCell $background={getSizeCellBackground(data)}>
-                  {numberFormatter.format(data.size)}
-                </SizeCell>
+                <SizeCell order={data} />
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
                 <TotalCell
