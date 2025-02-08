@@ -45,11 +45,11 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
         <TableCaption>Order Book</TableCaption>
         <TableHead>
           <TableRow>
-            <TableHeadCell $width="40%">Price (USD)</TableHeadCell>
-            <TableHeadCell $width="10%" $align="right">
+            <TableHeadCell $width="30%">Price (USD)</TableHeadCell>
+            <TableHeadCell $width="30%" $align="right">
               Size
             </TableHeadCell>
-            <TableHeadCell $width="50%" $align="right">
+            <TableHeadCell $width="40%" $align="right">
               Total
             </TableHeadCell>
           </TableRow>
@@ -64,15 +64,15 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                   : undefined
               }
             >
-              <TableBodyCell $color={theme.colors.ask.text}>
+              <TableBodyCell $width="30%" $color={theme.colors.ask.text}>
                 {data.price}
               </TableBodyCell>
-              <TableBodyCell $align="right">
+              <TableBodyCell $width="30%" $align="right">
                 <SizeCell $background={getSizeCellBackground(data)}>
                   {data.size}
                 </SizeCell>
               </TableBodyCell>
-              <TableBodyCell $align="right">
+              <TableBodyCell $width="40%" $align="right">
                 <TotalCell
                   $percentage={data.total / asks.totalSize}
                   $background={theme.colors.ask.background.light}
@@ -92,15 +92,15 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                   : undefined
               }
             >
-              <TableBodyCell $color={theme.colors.bid.text}>
+              <TableBodyCell $width="30%" $color={theme.colors.bid.text}>
                 {data.price}
               </TableBodyCell>
-              <TableBodyCell $align="right">
+              <TableBodyCell $width="30%" $align="right">
                 <SizeCell $background={getSizeCellBackground(data)}>
                   {data.size}
                 </SizeCell>
               </TableBodyCell>
-              <TableBodyCell $align="right">
+              <TableBodyCell $width="40%" $align="right">
                 <TotalCell
                   $percentage={data.total / bids.totalSize}
                   $background={theme.colors.bid.background.light}

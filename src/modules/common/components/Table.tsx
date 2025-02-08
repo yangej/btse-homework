@@ -1,12 +1,14 @@
 import styled, { CSSProperties } from 'styled-components';
 
-export const Table = styled.table<{ $width?: CSSProperties['width'] }>`
+export const Table = styled.div<{ $width?: CSSProperties['width'] }>`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   width: ${(props) => props.$width || '100%'};
   background-color: ${(props) => props.theme.colors.main.background.dark};
-  border-collapse: collapse;
 `;
 
-export const TableCaption = styled.caption`
+export const TableCaption = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.5;
@@ -17,55 +19,59 @@ export const TableCaption = styled.caption`
   padding: 0.5rem;
 `;
 
-export const TableRow = styled.tr<{
+export const TableRow = styled.div<{
   $background?: CSSProperties['background'];
 }>`
+  display: flex;
+  width: 100%;
   background-color: ${(props) => props.$background || 'transparent'};
   transition: background-color 0.3s ease-in-out;
 `;
 
-export const TableHeadCell = styled.th<{
+const TableCell = styled.div<{
   $align?: CSSProperties['textAlign'];
   $width?: CSSProperties['width'];
 }>`
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
   text-align: ${(props) => props.$align || 'left'};
-  color: ${(props) => props.theme.colors.main.caption};
   width: ${(props) => props.$width || '100%'};
-  border: none;
-`;
 
-export const TableHead = styled.thead`
-  ${TableHeadCell} {
-    padding: 0.5rem 0.75rem;
+  &:last-child {
+    padding-left: 0;
+  }
 
-    &:not(:first-child):not(:last-child) {
-      padding-right: 0;
-    }
+  &:first-child {
+    padding-right: 0;
   }
 `;
 
-export const TableBodyCell = styled.td<{
-  $align?: CSSProperties['textAlign'];
+export const TableHeadCell = styled(TableCell)`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: ${(props) => props.theme.colors.main.caption};
+  padding: 0.5rem 0.75rem;
+`;
+
+export const TableHead = styled.div``;
+
+export const TableBodyCell = styled(TableCell)<{
   $color?: CSSProperties['color'];
 }>`
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.5;
-  text-align: ${(props) => props.$align || 'left'};
   color: ${(props) => props.$color || props.theme.colors.main.text};
+  padding: 0.25rem 0.75rem;
 `;
 
-export const TableBody = styled.tbody`
+export const TableBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
   ${TableRow} {
     &:hover {
       background-color: ${(props) => props.theme.colors.main.background.light};
     }
-  }
-
-  ${TableBodyCell} {
-    padding: 0.25rem 0.75rem;
   }
 `;

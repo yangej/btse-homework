@@ -19,7 +19,7 @@ const LatestPriceRow = ({ record }: { record: PriceRecord }) => {
 
   return (
     <Row $backgroundColor={theme.colors[getThemeKey()].background.light}>
-      <Cell colSpan={3} $color={theme.colors[getThemeKey()].text}>
+      <Cell $color={theme.colors[getThemeKey()].text}>
         <PriceWrapper>
           <Text>{record.current}</Text>
           {record.current === record.previous ? null : (
@@ -35,9 +35,9 @@ const LatestPriceRow = ({ record }: { record: PriceRecord }) => {
   );
 };
 
-const Row = styled.tr<{ $backgroundColor: CSSProperties['backgroundColor'] }>`
+const Row = styled.div<{ $backgroundColor: CSSProperties['backgroundColor'] }>`
   width: 100%;
-  padding: 1rem;
+  padding: 0.125rem;
   background-color: ${(props) => props.$backgroundColor};
 `;
 

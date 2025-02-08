@@ -12,11 +12,11 @@ const ArrowIcon = ({ color = 'currentColor', size = 24 }: ArrowIconProps) => {
       viewBox="0 0 24 24"
       role="presentation"
       fill="none"
-      fill-rule="nonzero"
+      fillRule="nonzero"
       stroke={color}
-      stroke-width="4"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <line x1="12" y1="5" x2="12" y2="19"></line>
       <polyline points="19 12 12 19 5 12"></polyline>
