@@ -11,7 +11,7 @@ export const TableCaption = styled.caption`
   font-weight: 700;
   line-height: 1.5;
   text-align: left;
-  color: ${(props) => props.theme.colors.main.text.default};
+  color: ${(props) => props.theme.colors.main.text};
   background-color: ${(props) => props.theme.colors.main.background.dark};
   border-bottom: 1px solid ${(props) => props.theme.colors.main.border};
   padding: 0.5rem;
@@ -31,8 +31,8 @@ export const TableHeadCell = styled.th<{
   font-weight: 400;
   line-height: 1.5;
   text-align: ${(props) => props.$align || 'left'};
-  color: ${(props) => props.theme.colors.main.text.light};
-  column-width: ${(props) => props.$width || '100%'};
+  color: ${(props) => props.theme.colors.main.caption};
+  width: ${(props) => props.$width || '100%'};
   border: none;
 `;
 
@@ -54,7 +54,7 @@ export const TableBodyCell = styled.td<{
   font-weight: 700;
   line-height: 1.5;
   text-align: ${(props) => props.$align || 'left'};
-  color: ${(props) => props.$color || props.theme.colors.main.text.default};
+  color: ${(props) => props.$color || props.theme.colors.main.text};
 `;
 
 export const TableBody = styled.tbody`

@@ -1,9 +1,7 @@
 export const colors = {
   main: {
-    text: {
-      light: '#8698aa',
-      default: '#F0F4F8',
-    },
+    text: '#F0F4F8',
+    caption: '#8698aa',
     background: {
       light: '#1E3059',
       dark: '#131B29',
