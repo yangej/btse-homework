@@ -6,6 +6,7 @@ export const Table = styled.div<{ $width?: CSSProperties['width'] }>`
   width: 100%;
   width: ${(props) => props.$width || '100%'};
   background-color: ${(props) => props.theme.colors.main.background.dark};
+  padding-bottom: 0.5rem;
 `;
 
 export const TableCaption = styled.div`
