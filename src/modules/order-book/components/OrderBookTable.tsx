@@ -14,8 +14,8 @@ import { TotalCell } from '@/modules/order-book/components/TotalCell';
 import { OrderBookTableData } from '../types';
 
 type OrderBookTableProps = {
-  asks: OrderBookTableData['asks'];
-  bids: OrderBookTableData['bids'];
+  asks: OrderBookTableData;
+  bids: OrderBookTableData;
 };
 function OrderBookTable({ asks, bids }: OrderBookTableProps) {
   const theme = useTheme();

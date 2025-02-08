@@ -26,12 +26,6 @@ export type OrderBookTableDataItem = Order & {
 };
 
 export type OrderBookTableData = {
-  bids: {
-    data: OrderBookTableDataItem[];
-    totalSize: number;
-  };
-  asks: {
-    data: OrderBookTableDataItem[];
-    totalSize: number;
-  };
+  data: OrderBookTableDataItem[];
+  totalSize: number;
 };
