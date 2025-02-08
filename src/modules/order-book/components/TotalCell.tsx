@@ -1,6 +1,41 @@
-import styled, { CSSProperties } from 'styled-components';
+import styled, { CSSProperties, useTheme } from 'styled-components';
 
-export const TotalCell = styled.div<{
+import { numberFormatter } from '@/modules/common/formatters';
+
+import { OrderBookTableDataItem } from '../types';
+
+type TotalCellProps = {
+  order: OrderBookTableDataItem;
+  totalSize: number;
+};
+
+export const AskTotalCell = ({ order, totalSize }: TotalCellProps) => {
+  const theme = useTheme();
+
+  return (
+    <Wrapper
+      $percentage={order.total / totalSize}
+      $background={theme.colors.ask.background.light}
+    >
+      {numberFormatter.format(order.total)}
+    </Wrapper>
+  );
+};
+
+export const BidTotalCell = ({ order, totalSize }: TotalCellProps) => {
+  const theme = useTheme();
+
+  return (
+    <Wrapper
+      $percentage={order.total / totalSize}
+      $background={theme.colors.bid.background.light}
+    >
+      {numberFormatter.format(order.total)}
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div<{
   $percentage: number;
   $background: CSSProperties['background'];
 }>`

@@ -10,7 +10,10 @@ import {
   TableRow,
 } from '@/modules/common/components/Table';
 import { numberFormatter } from '@/modules/common/formatters';
-import { TotalCell } from '@/modules/order-book/components/TotalCell';
+import {
+  AskTotalCell,
+  BidTotalCell,
+} from '@/modules/order-book/components/TotalCell';
 import { PriceRecord } from '@/modules/trade/types';
 
 import { useNewOrderSet } from '../hooks/useNewOrderSet';
@@ -62,12 +65,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                 <SizeCell order={data} />
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
-                <TotalCell
-                  $percentage={data.total / asks.totalSize}
-                  $background={theme.colors.ask.background.light}
-                >
-                  {numberFormatter.format(data.total)}
-                </TotalCell>
+                <AskTotalCell order={data} totalSize={asks.totalSize} />
               </TableBodyCell>
             </TableRow>
           ))}
@@ -88,12 +86,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
                 <SizeCell order={data} />
               </TableBodyCell>
               <TableBodyCell $width="40%" $align="right">
-                <TotalCell
-                  $percentage={data.total / bids.totalSize}
-                  $background={theme.colors.bid.background.light}
-                >
-                  {numberFormatter.format(data.total)}
-                </TotalCell>
+                <BidTotalCell order={data} totalSize={bids.totalSize} />
               </TableBodyCell>
             </TableRow>
           ))}
