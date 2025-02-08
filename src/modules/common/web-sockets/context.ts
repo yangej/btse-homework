@@ -1,8 +1,9 @@
 import { createContext } from 'react';
 
-import { OSSWebSocketType } from './hooks/useWebSocket';
+import { BaseWebSocketType, OSSWebSocketType } from './hooks/useWebSocket';
 
 type WebSocketsContextValue = {
+  baseWebSocket: BaseWebSocketType;
   ossWebSocket: OSSWebSocketType;
 };
 

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 import { WebSocketsContext } from '../context';
-import { useOSSWebSocket } from '../hooks/useWebSocket';
+import { useBaseWebSocket, useOSSWebSocket } from '../hooks/useWebSocket';
 
 type WebSocketContextProviderProps = {
   children: ReactNode;
@@ -10,10 +10,11 @@ type WebSocketContextProviderProps = {
 const WebSocketContextProvider = ({
   children,
 }: WebSocketContextProviderProps) => {
+  const baseWebSocket = useBaseWebSocket();
   const ossWebSocket = useOSSWebSocket();
 
   return (
-    <WebSocketsContext.Provider value={{ ossWebSocket }}>
+    <WebSocketsContext.Provider value={{ ossWebSocket, baseWebSocket }}>
       {children}
     </WebSocketsContext.Provider>
   );
