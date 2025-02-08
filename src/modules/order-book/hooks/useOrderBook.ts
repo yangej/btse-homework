@@ -9,32 +9,41 @@ import { toOrder } from '../utils';
 const useOrdersData = () => {
   const mapRef = useRef<Map<string, Order>>(new Map());
   const [list, setList] = useState<Order[]>([]);
+  const [total, setTotal] = useState(0);
 
   const update = useCallback((pairs: OrderPair[]) => {
+    let totalDiff = 0;
+
     for (const [price, size] of pairs) {
       const newOrder = toOrder([price, size]);
 
       if (!mapRef.current.has(price)) {
         if (newOrder.size === 0) continue;
 
+        totalDiff += newOrder.size;
         mapRef.current.set(price, newOrder);
 
         continue;
       }
 
+      const oldOrder = mapRef.current.get(price)!;
+
       if (newOrder.size === 0) {
+        totalDiff -= oldOrder.size;
         mapRef.current.delete(price);
 
         continue;
       }
 
+      totalDiff += newOrder.size - oldOrder.size;
       mapRef.current.set(price, newOrder);
     }
 
     setList(Array.from(mapRef.current.values()));
+    setTotal((prev) => prev + totalDiff);
   }, []);
 
-  return [list, update] as const;
+  return [{ orders: list, total }, update] as const;
 };
 
 export const useOrderBook = () => {
