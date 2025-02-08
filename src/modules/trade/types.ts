@@ -11,3 +11,8 @@ export type TradeHistoryResponse = {
     },
   ];
 };
+
+export type PriceRecord = {
+  current: number;
+  previous: number;
+};
