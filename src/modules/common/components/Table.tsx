@@ -21,6 +21,7 @@ export const TableRow = styled.tr<{
   $background?: CSSProperties['background'];
 }>`
   background-color: ${(props) => props.$background || 'transparent'};
+  transition: background-color 0.3s ease-in-out;
 `;
 
 export const TableHeadCell = styled.th<{

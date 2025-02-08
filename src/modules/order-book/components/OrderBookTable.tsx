@@ -12,6 +12,7 @@ import {
 import { TotalCell } from '@/modules/order-book/components/TotalCell';
 import { PriceRecord } from '@/modules/trade/types';
 
+import { useNewOrderSet } from '../hooks/useNewOrderSet';
 import { OrderBookTableData, OrderBookTableDataItem } from '../types';
 import LatestPriceRow from './LatestPriceRow';
 import { SizeCell } from './SizeCell';
@@ -24,6 +25,9 @@ type OrderBookTableProps = {
 
 function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
   const theme = useTheme();
+
+  const newAskPrices = useNewOrderSet(asks.data);
+  const newBidPrices = useNewOrderSet(bids.data);
 
   const getSizeCellBackground = (order: OrderBookTableDataItem): string => {
     if (!order.prevSize || order.prevSize === order.size) return 'transparent';
@@ -51,12 +55,13 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {asks.data.map((data, index) => (
-            /** @todo: correct highlight background, only highlight when data is new */
+          {asks.data.map((data) => (
             <TableRow
               key={data.price}
               $background={
-                index === 0 ? theme.colors.ask.background.dark : undefined
+                newAskPrices.has(data.price)
+                  ? theme.colors.ask.background.dark
+                  : undefined
               }
             >
               <TableBodyCell $color={theme.colors.ask.text}>
@@ -78,12 +83,13 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
             </TableRow>
           ))}
           <LatestPriceRow record={priceRecord} />
-          {bids.data.map((data, index) => (
-            /** @todo: correct highlight background, only highlight when data is new */
+          {bids.data.map((data) => (
             <TableRow
               key={data.price}
               $background={
-                index === 1 ? theme.colors.bid.background.dark : undefined
+                newBidPrices.has(data.price)
+                  ? theme.colors.bid.background.dark
+                  : undefined
               }
             >
               <TableBodyCell $color={theme.colors.bid.text}>
