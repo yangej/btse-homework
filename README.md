@@ -26,6 +26,11 @@
 └── ... config files
 ```
 
+# 技術採用
+- framework: React.js
+- language: TypeScript
+- css-in-js: styled-components
+
 # 設計說明
 - web socket 連線
   - 本專案有兩條不同的連線，所以抽象了一層 `useWebSocket` 來實作連線邏輯，在 `useWebSocket` 裡：
