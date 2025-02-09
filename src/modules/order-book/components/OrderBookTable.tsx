@@ -51,7 +51,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
         <TableBody>
           {asks.data.map((data) => (
             <TableRow
-              key={data.price}
+              key={`${data.price}-${data.size}`}
               $background={
                 newAskPrices.has(data.price)
                   ? theme.colors.ask.background.dark
@@ -72,7 +72,7 @@ function OrderBookTable({ asks, bids, priceRecord }: OrderBookTableProps) {
           <LatestPriceRow record={priceRecord} />
           {bids.data.map((data) => (
             <TableRow
-              key={data.price}
+              key={`${data.price}-${data.size}`}
               $background={
                 newBidPrices.has(data.price)
                   ? theme.colors.bid.background.dark
