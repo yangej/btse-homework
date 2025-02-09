@@ -18,6 +18,7 @@ export type OrderBookResponse = {
 
 export type Order = {
   price: number;
+  prevSize: number;
   size: number;
 };
 

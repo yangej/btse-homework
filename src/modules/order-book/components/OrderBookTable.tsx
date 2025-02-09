@@ -11,7 +11,8 @@ import {
 } from '@/modules/common/components/Table';
 import { TotalCell } from '@/modules/order-book/components/TotalCell';
 
-import { OrderBookTableData } from '../types';
+import { OrderBookTableData, OrderBookTableDataItem } from '../types';
+import { SizeCell } from './SizeCell';
 
 type OrderBookTableProps = {
   asks: OrderBookTableData;
@@ -19,6 +20,16 @@ type OrderBookTableProps = {
 };
 function OrderBookTable({ asks, bids }: OrderBookTableProps) {
   const theme = useTheme();
+
+  const getSizeCellBackground = (order: OrderBookTableDataItem): string => {
+    if (!order.prevSize || order.prevSize === order.size) return 'transparent';
+
+    if (order.size > order.prevSize) {
+      return theme.colors.bid.background.dark;
+    }
+
+    return theme.colors.ask.background.dark;
+  };
 
   return (
     <>
@@ -47,7 +58,11 @@ function OrderBookTable({ asks, bids }: OrderBookTableProps) {
               <TableBodyCell $color={theme.colors.ask.text}>
                 {data.price}
               </TableBodyCell>
-              <TableBodyCell $align="right">{data.size}</TableBodyCell>
+              <TableBodyCell $align="right">
+                <SizeCell $background={getSizeCellBackground(data)}>
+                  {data.size}
+                </SizeCell>
+              </TableBodyCell>
               <TableBodyCell $align="right">
                 <TotalCell
                   $percentage={data.total / asks.totalSize}
@@ -69,7 +84,11 @@ function OrderBookTable({ asks, bids }: OrderBookTableProps) {
               <TableBodyCell $color={theme.colors.bid.text}>
                 {data.price}
               </TableBodyCell>
-              <TableBodyCell $align="right">{data.size}</TableBodyCell>
+              <TableBodyCell $align="right">
+                <SizeCell $background={getSizeCellBackground(data)}>
+                  {data.size}
+                </SizeCell>
+              </TableBodyCell>
               <TableBodyCell $align="right">
                 <TotalCell
                   $percentage={data.total / bids.totalSize}

@@ -36,7 +36,7 @@ const useOrdersData = () => {
       }
 
       totalDiff += newOrder.size - oldOrder.size;
-      mapRef.current.set(price, newOrder);
+      mapRef.current.set(price, { ...newOrder, prevSize: oldOrder.size });
     }
 
     setList(Array.from(mapRef.current.values()));

@@ -11,12 +11,12 @@ export const getBids = (orders: Order[]): OrderBookTableData => {
   let lastSize = 0;
 
   for (let i = 0; i < orders.length; i++) {
-    const { price, size } = orders[i];
+    const { size, ...rest } = orders[i];
     const total = lastSize + size;
     lastSize = total;
 
     result.push({
-      price,
+      ...rest,
       size,
       total,
     });
@@ -31,13 +31,13 @@ export const getAsks = (orders: Order[]): OrderBookTableData => {
   let lastSize = 0;
 
   for (let i = orders.length - 1; i >= 0; i--) {
-    const { price, size } = orders[i];
+    const { size, ...rest } = orders[i];
     const total = lastSize + size;
     lastSize = total;
 
     result.unshift({
-      price: Number(price),
-      size: Number(size),
+      ...rest,
+      size,
       total,
     });
   }
@@ -46,5 +46,5 @@ export const getAsks = (orders: Order[]): OrderBookTableData => {
 };
 
 export const toOrder = ([price, size]: OrderPair): Order => {
-  return { price: Number(price), size: Number(size) };
+  return { price: Number(price), size: Number(size), prevSize: 0 };
 };

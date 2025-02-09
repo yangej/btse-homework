@@ -32,7 +32,8 @@ export const TableHeadCell = styled.th<{
   line-height: 1.5;
   text-align: ${(props) => props.$align || 'left'};
   color: ${(props) => props.theme.colors.main.text.light};
-  width: ${(props) => props.$width || '100%'};
+  column-width: ${(props) => props.$width || '100%'};
+  border: none;
 `;
 
 export const TableHead = styled.thead`
