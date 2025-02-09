@@ -24,57 +24,57 @@ export const useWebSocket = <Topic extends string>(
   const reconnectAttemptsRef = useRef(0);
   const reconnectTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const connect = useCallback(() => {
-    const webSocket = new WebSocket(endpoint);
-
-    webSocket.onopen = () => {
-      console.info('Connection to ', endpoint, 'is opened');
-
-      if (reconnectTimeoutIdRef.current) {
-        clearTimeout(reconnectTimeoutIdRef.current);
-        reconnectTimeoutIdRef.current = null;
-      }
-      reconnectAttemptsRef.current = 0;
-      setReady(true);
-    };
-
-    webSocket.onclose = () => {
-      if (
-        options?.reconnect &&
-        reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS
-      ) {
-        reconnectAttemptsRef.current++;
-
-        // NOTE: Exponential backoff
-        const delay = Math.min(
-          1000 * 2 ** reconnectAttemptsRef.current,
-          MAX_RECONNECT_DELAY,
-        );
-        reconnectTimeoutIdRef.current = setTimeout(() => {
-          console.info('Reconnecting to ', endpoint, '...');
-
-          connect();
-        }, delay);
-      } else {
-        console.info('Connection to ', endpoint, 'is closed');
-      }
-
-      instanceRef.current = null;
-      setReady(false);
-    };
-
-    webSocket.onerror = (error) => {
-      console.error('Connection to ', endpoint, 'failed', error);
-    };
-
-    webSocket.onmessage = (event) => {
-      setMessage(event.data);
-    };
-
-    instanceRef.current = webSocket;
-  }, [endpoint, options?.reconnect]);
-
   useEffect(() => {
+    const connect = () => {
+      const webSocket = new WebSocket(endpoint);
+
+      webSocket.onopen = () => {
+        console.info('Connection to ', endpoint, 'is opened');
+
+        if (reconnectTimeoutIdRef.current) {
+          clearTimeout(reconnectTimeoutIdRef.current);
+          reconnectTimeoutIdRef.current = null;
+        }
+        reconnectAttemptsRef.current = 0;
+        setReady(true);
+      };
+
+      webSocket.onclose = () => {
+        if (
+          options?.reconnect &&
+          reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS
+        ) {
+          reconnectAttemptsRef.current++;
+
+          // NOTE: Exponential backoff
+          const delay = Math.min(
+            1000 * 2 ** reconnectAttemptsRef.current,
+            MAX_RECONNECT_DELAY,
+          );
+          reconnectTimeoutIdRef.current = setTimeout(() => {
+            console.info('Reconnecting to ', endpoint, '...');
+
+            connect();
+          }, delay);
+        } else {
+          console.info('Connection to ', endpoint, 'is closed');
+        }
+
+        instanceRef.current = null;
+        setReady(false);
+      };
+
+      webSocket.onerror = (error) => {
+        console.error('Connection to ', endpoint, 'failed', error);
+      };
+
+      webSocket.onmessage = (event) => {
+        setMessage(event.data);
+      };
+
+      instanceRef.current = webSocket;
+    };
+
     connect();
 
     return () => {
@@ -91,7 +91,7 @@ export const useWebSocket = <Topic extends string>(
         instanceRef.current.close();
       }
     };
-  }, [endpoint, connect]);
+  }, [endpoint, options?.reconnect]);
 
   const subscribe = useCallback((topic: Topic, args?: string[]) => {
     if (
