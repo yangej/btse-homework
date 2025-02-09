@@ -13,11 +13,12 @@ export const AskTotalCell = ({ order, totalSize }: TotalCellProps) => {
   const theme = useTheme();
 
   return (
-    <Wrapper
-      $percentage={order.total / totalSize}
-      $background={theme.colors.ask.background.light}
-    >
+    <Wrapper>
       {numberFormatter.format(order.total)}
+      <Bar
+        $percentage={order.total / totalSize}
+        $background={theme.colors.ask.background.light}
+      />
     </Wrapper>
   );
 };
@@ -26,28 +27,33 @@ export const BidTotalCell = ({ order, totalSize }: TotalCellProps) => {
   const theme = useTheme();
 
   return (
-    <Wrapper
-      $percentage={order.total / totalSize}
-      $background={theme.colors.bid.background.light}
-    >
+    <Wrapper>
       {numberFormatter.format(order.total)}
+      <Bar
+        $percentage={order.total / totalSize}
+        $background={theme.colors.bid.background.light}
+      />
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div<{
+const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+`;
+
+const Bar = styled.div<{
   $percentage: number;
   $background: CSSProperties['background'];
 }>`
-  position: relative;
+  position: absolute;
+  height: 100%;
   width: 100%;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    height: 100%;
-    width: ${(props) => `${props.$percentage * 100}%`};
-    background: ${(props) => props.$background};
-  }
+  transform: translateX(${(props) => `${(1 - props.$percentage) * 100}%`});
+  background: ${(props) => props.$background};
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 `;
