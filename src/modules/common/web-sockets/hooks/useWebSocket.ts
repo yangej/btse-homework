@@ -1,6 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { WEB_SOCKET_URL } from '../constants';
+
+const MAX_RECONNECT_ATTEMPTS = 10;
+const MAX_RECONNECT_DELAY = 30000;
 
 export type WebSocketHookValue<Topic extends string> = {
   ready: boolean;
@@ -11,22 +14,52 @@ export type WebSocketHookValue<Topic extends string> = {
 
 export const useWebSocket = <Topic extends string>(
   endpoint: string,
+  options?: {
+    reconnect?: boolean;
+  },
 ): WebSocketHookValue<Topic> => {
-  const [instance, setInstance] = useState<WebSocket | null>(null);
   const [message, setMessage] = useState<string | undefined>();
   const [ready, setReady] = useState(false);
+  const instanceRef = useRef<WebSocket | null>(null);
+  const reconnectAttemptsRef = useRef(0);
+  const reconnectTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  useEffect(() => {
+  const connect = useCallback(() => {
     const webSocket = new WebSocket(endpoint);
 
     webSocket.onopen = () => {
       console.info('Connection to ', endpoint, 'is opened');
+
+      if (reconnectTimeoutIdRef.current) {
+        clearTimeout(reconnectTimeoutIdRef.current);
+        reconnectTimeoutIdRef.current = null;
+      }
+      reconnectAttemptsRef.current = 0;
       setReady(true);
     };
 
     webSocket.onclose = () => {
-      console.info('Connection to ', endpoint, 'is closed');
-      setInstance(null);
+      if (
+        options?.reconnect &&
+        reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS
+      ) {
+        reconnectAttemptsRef.current++;
+
+        // NOTE: Exponential backoff
+        const delay = Math.min(
+          1000 * 2 ** reconnectAttemptsRef.current,
+          MAX_RECONNECT_DELAY,
+        );
+        reconnectTimeoutIdRef.current = setTimeout(() => {
+          console.info('Reconnecting to ', endpoint, '...');
+
+          connect();
+        }, delay);
+      } else {
+        console.info('Connection to ', endpoint, 'is closed');
+      }
+
+      instanceRef.current = null;
       setReady(false);
     };
 
@@ -38,45 +71,57 @@ export const useWebSocket = <Topic extends string>(
       setMessage(event.data);
     };
 
-    setInstance(webSocket);
+    instanceRef.current = webSocket;
+  }, [endpoint, options?.reconnect]);
+
+  useEffect(() => {
+    connect();
 
     return () => {
+      if (reconnectTimeoutIdRef.current) {
+        clearTimeout(reconnectTimeoutIdRef.current);
+        reconnectTimeoutIdRef.current = null;
+        reconnectAttemptsRef.current = 0;
+      }
+
       if (
-        webSocket.readyState !== webSocket.CLOSED &&
-        webSocket.readyState !== webSocket.CLOSING
+        instanceRef.current &&
+        instanceRef.current.readyState === instanceRef.current.OPEN
       ) {
-        webSocket.close();
+        instanceRef.current.close();
       }
     };
-  }, [endpoint]);
+  }, [endpoint, connect]);
 
-  const subscribe = useCallback(
-    (topic: Topic, args?: string[]) => {
-      if (!instance || instance.readyState !== instance.OPEN) return;
+  const subscribe = useCallback((topic: Topic, args?: string[]) => {
+    if (
+      !instanceRef.current ||
+      instanceRef.current.readyState !== instanceRef.current.OPEN
+    )
+      return;
 
-      instance.send(
-        JSON.stringify({
-          op: 'subscribe',
-          args: args ? [topic, ...args] : [topic],
-        }),
-      );
-    },
-    [instance],
-  );
+    instanceRef.current.send(
+      JSON.stringify({
+        op: 'subscribe',
+        args: args ? [topic, ...args] : [topic],
+      }),
+    );
+  }, []);
 
-  const unsubscribe = useCallback(
-    (topic: Topic, args?: string[]) => {
-      if (!instance || instance.readyState !== instance.OPEN) return;
+  const unsubscribe = useCallback((topic: Topic, args?: string[]) => {
+    if (
+      !instanceRef.current ||
+      instanceRef.current.readyState !== instanceRef.current.OPEN
+    )
+      return;
 
-      instance.send(
-        JSON.stringify({
-          op: 'unsubscribe',
-          args: args ? [topic, ...args] : [topic],
-        }),
-      );
-    },
-    [instance],
-  );
+    instanceRef.current.send(
+      JSON.stringify({
+        op: 'unsubscribe',
+        args: args ? [topic, ...args] : [topic],
+      }),
+    );
+  }, []);
 
   return {
     ready,
