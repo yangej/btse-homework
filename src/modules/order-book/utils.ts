@@ -46,5 +46,5 @@ export const getAsks = (orders: Order[]): OrderBookTableData => {
 };
 
 export const toOrder = ([price, size]: OrderPair): Order => {
-  return { price: Number(price), size: Number(size), prevSize: 0 };
+  return { price: Number(price) || 0, size: Number(size) || 0, prevSize: 0 };
 };
