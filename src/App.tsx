@@ -2,19 +2,22 @@ import styled from 'styled-components';
 
 import OrderBookTable from './modules/order-book/components/OrderBookTable';
 import { useOrderBook } from './modules/order-book/hooks/useOrderBook';
-import { getAsks, getBids } from './modules/order-book/utils';
+import {
+  getAsksOrderBookTableData,
+  getBidsOrderBookTableData,
+} from './modules/order-book/utils';
 import { useLatestTradePriceRecord } from './modules/trade/hooks/useLatestTradePriceRecord';
 
 const MAX_DISPLAYED_ORDERS = 8;
 
 function App() {
   const { data, loading } = useOrderBook();
-  const displayedAsksData = getAsks(
+  const displayedAsksData = getAsksOrderBookTableData(
     data.asks.orders
       .sort((a, b) => b.price - a.price)
       .slice(0, MAX_DISPLAYED_ORDERS),
   );
-  const displayedBidsData = getBids(
+  const displayedBidsData = getBidsOrderBookTableData(
     data.bids.orders
       .sort((a, b) => b.price - a.price)
       .slice(0, MAX_DISPLAYED_ORDERS),

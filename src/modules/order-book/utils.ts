@@ -5,7 +5,9 @@ import {
   OrderPair,
 } from './types';
 
-export const getBids = (orders: Order[]): OrderBookTableData => {
+export const getBidsOrderBookTableData = (
+  orders: Order[],
+): OrderBookTableData => {
   const result: OrderBookTableDataItem[] = [];
 
   let lastSize = 0;
@@ -25,7 +27,9 @@ export const getBids = (orders: Order[]): OrderBookTableData => {
   return { data: result, totalSize: lastSize };
 };
 
-export const getAsks = (orders: Order[]): OrderBookTableData => {
+export const getAsksOrderBookTableData = (
+  orders: Order[],
+): OrderBookTableData => {
   const result: OrderBookTableDataItem[] = [];
 
   let lastSize = 0;
