@@ -136,7 +136,7 @@ type OSSWebSocketSupportedTopics = 'update:BTCPFC_0';
 export type OSSWebSocketType = WebSocketHookValue<OSSWebSocketSupportedTopics>;
 
 export const useOSSWebSocket = (): OSSWebSocketType => {
-  return useWebSocket(`${WEB_SOCKET_URL}/oss/futures`);
+  return useWebSocket(`${WEB_SOCKET_URL}/oss/futures`, { reconnect: true });
 };
 
 type BaseWebSocketSupportedTopics =
@@ -147,5 +147,5 @@ export type BaseWebSocketType =
   WebSocketHookValue<BaseWebSocketSupportedTopics>;
 
 export const useBaseWebSocket = (): BaseWebSocketType => {
-  return useWebSocket(`${WEB_SOCKET_URL}/futures`);
+  return useWebSocket(`${WEB_SOCKET_URL}/futures`, { reconnect: true });
 };
